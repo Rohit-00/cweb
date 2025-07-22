@@ -60,11 +60,7 @@ int main() {
           FD_SET(conn_fd,&master_writefds);
           
         }else{
-          char buff[456] = {0};
-          read(i,&buff,sizeof(buff));
-          close(i);
-          FD_CLR(i,&master_readfds);
-          
+         FD_CLR(i,&master_readfds);
         }
       }else if(FD_ISSET(i,&writefds)){
           handle_connection(i);
