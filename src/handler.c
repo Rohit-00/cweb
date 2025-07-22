@@ -17,12 +17,30 @@ int handle_connection(int fd){
 
  req = parse(buf);
 
- //path handling like a pro
  if (strcmp(req.path,"/")==0){
-    char *res = format_response("<!DOCTYPE html><html><body><p>Hello World</p></body></html>");
-    write(fd,res,sizeof(res)*4096);
+    FILE *file = fopen("../html/home.html","r");
+    if(!file){
+      perror("file");
+    }
+    //getting the file size 
+    fseek(file,0,SEEK_END);
+    long file_size = ftell(file);
+    rewind(file);
+
+    char *html_content = malloc(file_size + 1);
+    if(!html_content){
+      perror("memory allocation failed");
+      fclose(file);
+      return -1;
+    }
+    
+    size_t read_size = fread(html_content, 1, file_size, file);
+    printf("%s\n",html_content);
+    fclose(file); 
+
+    char *res = format_response(html_content);
+    write(fd,res,sizeof(char)*read_size+495);
     free(res);
-    printf("%s",res);
   }
  else if(strcmp(req.path,"/about")==0){
     printf("about page");
