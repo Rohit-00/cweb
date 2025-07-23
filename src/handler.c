@@ -17,12 +17,12 @@ int handle_connection(int fd){
 
  req = parse(buf);
 
- if (strcmp(req.path,"/")==0){
+ if (strcmp(req.path,"/")==0 && strcmp(req.method,"GET")==0){
     FILE *file = fopen("../html/home.html","r");
     if(!file){
       perror("file");
     }
-    //getting the file size 
+
     fseek(file,0,SEEK_END);
     long file_size = ftell(file);
     rewind(file);
@@ -35,18 +35,34 @@ int handle_connection(int fd){
     }
     
     size_t read_size = fread(html_content, 1, file_size, file);
-    printf("%s\n",html_content);
     fclose(file); 
 
     char *res = format_response(html_content);
     write(fd,res,sizeof(char)*read_size+495);
     free(res);
+    free(html_content);
   }
- else if(strcmp(req.path,"/about")==0){
-    printf("about page");
+ else if(strcmp(req.path,"/about")==0 && strcmp(req.method,"GET")==0){
+    char *res = format_response("<!doctype html><html><body><p>about</p></body></html>");
+    write(fd,res,sizeof(char)*4094);
+    free(res);
+    res = NULL;
+
   }
- else if(strcmp(req.path, "/whoami")==0){
+ else if(strcmp(req.path, "/whoami")==0 && strcmp(req.method,"GET")==0){
     printf("about me");
+  }
+ else if(strcmp(req.path,"/getdata")==0 && strcmp(req.method,"GET")==0){
+    //handle request to get forum data here
+  }
+ else if(strcmp(req.path,"/addmsg")==0 && strcmp(req.method,"POST")==0){
+    //handle post request for adding data here 
+  }
+ else {
+    char *res = format_response("<!doctype html><html><body><p>Sorry Can't find the page you're looking for</p></body></html>");
+    write(fd,res,4094);
+    free(res);
+    res = NULL;
   }
 
  return 0;
