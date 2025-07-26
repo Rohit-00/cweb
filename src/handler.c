@@ -69,6 +69,12 @@ int handle_connection(int fd){
   body = parse_body(buf);
   int err = add_message(&body);
   }
+  else if(strcmp(req.path, "/getposts")==0 && strcmp(req.method,"GET")==0){
+    char *posts = get_messages();
+    size_t posts_len = strlen(posts);
+    write(fd,posts,posts_len);
+    free(posts);
+  }
  else {
     char *res = format_response("<!doctype html><html><body><p>Sorry Can't find the page you're looking for</p></body></html>");
     write(fd,res,4094);
