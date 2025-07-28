@@ -20,13 +20,13 @@ int main() {
     int nfds = 0;
     int opt = 1;
     listen_fd = socket(AF_INET,SOCK_STREAM,0);
-    if(setsockopt(listen_fd,SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))){
-    perror("sockopt");
-  }
-
     if(listen_fd == -1){
       perror("socket");
         }
+
+    if(setsockopt(listen_fd,SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))){
+    perror("sockopt");
+     }
 
     serverinfo.sin_family = AF_INET;
     serverinfo.sin_port = htons(1234);
@@ -34,10 +34,10 @@ int main() {
     
     if(bind(listen_fd,(struct sockaddr*)&serverinfo,sizeof(serverinfo))==-1){
           perror("bind");
-  }
+    }
     if(listen(listen_fd,10)==-1){
           perror("listen");
-  }
+    }
     FD_ZERO(&master_readfds);
     FD_ZERO(&master_writefds);
     FD_SET(listen_fd,&master_readfds);
