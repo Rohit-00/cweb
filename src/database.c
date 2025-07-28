@@ -7,7 +7,12 @@
 char* get_messages(){
 
   FILE *file = fopen("../database/database.db","rb");
+  if(!file){
+    char *res = format_json_response("[empty]");  
+    return res;
+    perror("file");
 
+  }
   fseek(file, 0, SEEK_END);
   long file_size = ftell(file);
   rewind(file);
@@ -23,7 +28,11 @@ char* get_messages(){
 
   //formatting the data to json
   for (int i = count - 1; i>=0 ; i--) { 
-    if(i==count-1){
+
+    if(count == 1){
+        int bytes_written = sprintf(response + total_bytes_written, "[{\"username\": \"%s\", \"message\": \"%s\"}]",messages[i].username,messages[i].message);
+    }
+    else if(i==count-1){
     int bytes_written = sprintf(response + total_bytes_written,"[{\"username\": \"%s\", \"message\": \"%s\"},",messages[i].username,messages[i].message);
     total_bytes_written += bytes_written;
     } else if(i==0){
