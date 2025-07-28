@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelVerse - Forums</title>
+        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='100%25' height='100%25' fill='%231a1a2e'/%3E%3Cpath fill='%23f0a500' d='M4 2h8v2H4zM2 4h2v8H2zM4 12h8v2H4z'/%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Custom styles to enhance the pixel theme */
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            background-image: 
+                linear-gradient(rgba(26, 26, 46, 0.95), rgba(26, 26, 46, 0.95)),
+                url('https://www.transparenttextures.com/patterns/pixels.png');
+            font-size: 18px;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-pixel {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Create a "pixelated" border effect */
+        .pixel-border {
+            border: 4px solid #000;
+            box-shadow: 
+                inset 0 0 0 2px #5a5a8a,
+                4px 4px 0 0 #000;
+            position: relative;
+        }
+
+        /* Button styling for a retro game feel */
+        .pixel-button {
+            background-color: #e94560;
+            color: #fff;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0 0 #000;
+            position: relative;
+            transition: all 0.1s ease-in-out;
+            text-shadow: 1px 1px 0 #000;
+            cursor: pointer;
+        }
+
+        .pixel-button:hover {
+            background-color: #f06278;
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0 0 #000;
+        }
+
+        .pixel-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 0 #000;
+        }
+        
+        /* Styling for form inputs */
+        .pixel-input {
+            background-color: #162447;
+            border: 2px solid #5a5a8a;
+            padding: 8px 12px;
+            color: #e0e0e0;
+            width: 100%;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+        }
+        .pixel-input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.visible .modal-container {
+             transform: scale(1);
+        }
+        
+        /* Message success box */
+        #success-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.5s ease-in-out;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <header class="bg-[#162447]/80 pixel-border mb-8 sticky top-0 z-50 backdrop-blur-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <h1 class="text-2xl md:text-3xl text-white mb-4 sm:mb-0">
+                    <a href="/" class="inline-block">PixelVerse</a>
+                </h1>
+                <nav class="flex items-center space-x-2 md:space-x-4 text-sm md:text-base">
+                    <a href="/" class="pixel-button px-3 py-2">Home</a>
+                    <a href="/about" class="pixel-button px-3 py-2">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 flex-grow">
+        
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="font-pixel text-xl md:text-2xl text-white">Main Feed</h2>
+            <button id="new-post-btn" class="pixel-button bg-[#00b894] hover:bg-[#55efc4] px-4 py-2">New Post</button>
+        </div>
+
+        <section id="feed-container" class="space-y-4">
+        </section>
+
+    </main>
+
+    <footer class="text-center p-8 mt-8 border-t-4 border-black bg-[#162447]/80">
+        <p class="font-pixel text-sm text-gray-400">PIXELVERSE FORUMS &copy; 2025</p>
+        <p class="text-xs text-gray-500 mt-2">Powered by caffeine, nostalgia, and pointers.</p>
+    </footer>
+
+    <div id="post-modal" class="modal-overlay">
+        <div class="modal-container">
+            <section class="pixel-border bg-[#1f4068] p-4 md:p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-pixel text-lg text-[#f0a500]">// New Message</h2>
+                    <button id="close-modal-btn" class="font-pixel text-2xl text-red-500 hover:text-red-400">&times;</button>
+                </div>
+                <form id="post-form">
+                    <div class="mb-4">
+                        <label for="username" class="font-pixel block mb-2 text-sm">Username</label>
+                        <input type="text" id="username" name="username" class="pixel-input" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="font-pixel block mb-2 text-sm">Message</label>
+                        <textarea id="message" name="message" rows="4" class="pixel-input" required></textarea>
+                    </div>
+                    <button type="submit" class="pixel-button px-4 py-2 w-full">Send Post</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <div id="success-box" class="pixel-border bg-green-500 text-white font-pixel text-sm p-3 opacity-0" style="transition: opacity 0.5s;">
+        Post Successful!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const postModal = document.getElementById('post-modal');
+            const newPostBtn = document.getElementById('new-post-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const postForm = document.getElementById('post-form');
+            const feedContainer = document.getElementById('feed-container');
+
+            // --- Event Listeners to toggle modal ---
+            newPostBtn.addEventListener('click', () => {
+                postModal.classList.add('visible');
+            });
+
+            const hideModal = () => {
+                postModal.classList.remove('visible');
+            };
+
+            closeModalBtn.addEventListener('click', hideModal);
+            postModal.addEventListener('click', (event) => {
+                if (event.target === postModal) {
+                    hideModal();
+                }
+            });
+
+            // --- Form Submission Logic ---
+            postForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (username === '' || message === '') {
+                    console.error("Username and message are required.");
+                    return;
+                }
+
+                const postData = {
+                    username: username,
+                    message: message,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // When a user submits a new post, prepend it so it appears at the top instantly
+                addPostToFeed(postData, true); 
+                simulatePostRequest(postData);
+
+                hideModal();
+                postForm.reset();
+                showSuccessMessage();
+            });
+            
+            // MODIFIED: This function now takes an optional 'prepend' argument
+            function addPostToFeed(post, prepend = false) {
+                const postElement = document.createElement('div');
+                postElement.className = 'pixel-border bg-[#1f4068]/80 p-4';
+                
+                const timeDisplay = post.timestamp ? formatTimeAgo(post.timestamp) : 'Just now';
+                
+                postElement.innerHTML = `
+                    <div class="flex justify-between items-center border-b-2 border-[#5a5a8a] pb-2 mb-2">
+                        <h4 class="font-pixel text-base text-[#f0a500]">${escapeHTML(post.username)}</h4>
+                        <span class="text-xs text-gray-400">${timeDisplay}</span>
+                    </div>
+                    <p>${escapeHTML(post.message)}</p>
+                `;
+                
+                if (prepend) {
+                    feedContainer.prepend(postElement);
+                } else {
+                    feedContainer.append(postElement); // FIXED: Default is now append
+                }
+            }
+
+            // --- API Fetching Logic ---
+            async function fetchAndDisplayPosts() {
+                // IMPORTANT: Replace this with the actual URL of your API endpoint
+                const API_URL = '/getposts'; 
+                
+                feedContainer.innerHTML = `<p class="text-center">Loading posts...</p>`;
+
+                try {
+                    const response = await fetch(API_URL);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const posts = await response.json();
+
+                    feedContainer.innerHTML = '';
+                    
+                    posts.forEach(post => {
+                        const postData = {
+                            username: post.username,
+                            message: post.message,
+                            timestamp: new Date(Date.now() - Math.random() * 1000 * 3600 * 24).toISOString() // Fake a past timestamp
+                        };
+                        // Initial posts are appended to keep chronological order
+                        addPostToFeed(postData, false);
+                    });
+                    
+                } catch (error) {
+                    console.error("Failed to fetch posts:", error);
+                    feedContainer.innerHTML = `<p class="text-center text-red-400">Could not load feed. Please try again later.</p>`;
+                }
+            }
+
+            function formatTimeAgo(isoString) {
+                const date = new Date(isoString);
+                const now = new Date();
+                const seconds = Math.round((now - date) / 1000);
+                
+                const minutes = Math.round(seconds / 60);
+                const hours = Math.round(minutes / 60);
+                const days = Math.round(hours / 24);
+
+                if (seconds < 60) return `${seconds} secs ago`;
+                if (minutes < 60) return `${minutes} mins ago`;
+                if (hours < 24) return `${hours} hours ago`;
+                return `${days} days ago`;
+            }
+
+            function simulatePostRequest(postData) {
+                console.log("Preparing to send POST request with data:", postData);
+                fetch('/addmsg', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(postData),
+                })
+                .then(response => {
+                    if (!response.ok) console.warn(`Server responded with status: ${response.status}. This is expected in a static demo.`);
+                    return response.json().catch(() => ({}));
+                })
+                .then(data => console.log('Success (simulated):', data))
+                .catch(error => {
+                    console.error('Error during fetch:', error);
+                    console.log("This error is expected when running as a local file. The POST request is simulated.");
+                });
+            }
+            
+            function showSuccessMessage() {
+                const successBox = document.getElementById('success-box');
+                successBox.style.opacity = '1';
+                setTimeout(() => {
+                    successBox.style.opacity = '0';
+                }, 2000);
+            }
+
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.appendChild(document.createTextNode(str));
+                return div.innerHTML;
+            }
+
+            // Call the function to fetch data when the page loads
+            fetchAndDisplayPosts();
+        });
+    </script>
+
+</body>
+</html>
