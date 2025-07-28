@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelVerse - Forged in C</title>
-    
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='100%25' height='100%25' fill='%231a1a2e'/%3E%3Cpath fill='%23f0a500' d='M4 2h8v2H4zM2 4h2v8H2zM4 12h8v2H4z'/%3E%3C/svg%3E">
+    <title>About PixelVerse</title>
+            <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='100%25' height='100%25' fill='%231a1a2e'/%3E%3Cpath fill='%23f0a500' d='M4 2h8v2H4zM2 4h2v8H2zM4 12h8v2H4z'/%3E%3C/svg%3E">
+
     <!-- Google Fonts for pixelated look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,11 +42,6 @@
             position: relative;
         }
 
-        /* Style for the main header title */
-        .title-glitch {
-            animation: glitch 2.5s infinite;
-        }
-
         /* Button styling for a retro game feel */
         .pixel-button {
             background-color: #e94560;
@@ -69,30 +64,6 @@
             transform: translate(2px, 2px);
             box-shadow: 0 0 0 0 #000;
         }
-        
-        /* Glitch animation for the title */
-        @keyframes glitch {
-            0%, 100% { transform: none; opacity: 1; }
-            20% { transform: skewX(5deg) translateX(5px); }
-            21% { transform: skewX(-5deg) translateX(-5px); }
-            40% { transform: skewX(3deg) translateY(3px); }
-            41% { transform: skewX(-3deg) translateY(-3px); }
-            60% { text-shadow: 0 0 5px #e94560, 0 0 10px #e94560; opacity: 0.8; }
-            61% { text-shadow: none; opacity: 1; }
-        }
-
-        /* Custom scrollbar for a more thematic feel */
-        ::-webkit-scrollbar {
-            width: 12px;
-            background-color: #1a1a2e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #e94560;
-            border: 2px solid #000;
-        }
-        ::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 5px #000;
-        }
     </style>
 </head>
 <body class="antialiased">
@@ -102,29 +73,40 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex flex-col sm:flex-row justify-between items-center">
                 <h1 class="text-2xl md:text-3xl text-white mb-4 sm:mb-0">
-                    <a href="#" class="title-glitch inline-block">PixelVerse</a>
+                    <a href="/" class="inline-block">PixelVerse</a>
                 </h1>
                 <nav class="flex items-center space-x-2 md:space-x-4 text-sm md:text-base">
-                    <!-- The "Enter Forum" button would link to your other HTML file -->
-                    <a href="/forum" class="pixel-button bg-[#00b894] hover:bg-[#55efc4] px-3 py-2">Enter Forum</a>
-                    <a href="/about" class="pixel-button px-3 py-2">About</a>
+                    <!-- These links would point to your other HTML files -->
+                    <a href="/" class="pixel-button px-3 py-2">Home</a>
+                    <a href="/forum" class="pixel-button bg-[#00b894] hover:bg-[#55efc4] px-3 py-2">Forum</a>
                 </nav>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 flex-grow flex items-center justify-center">
+    <main class="container mx-auto px-4 flex-grow">
         
-        <section class="pixel-border bg-[#1f4068]/80 p-6 md:p-10 text-center max-w-3xl">
-            <h2 class="text-2xl md:text-4xl text-[#f0a500] mb-4 font-pixel">// FORGED IN C //</h2>
-            <p class="text-lg md:text-xl mb-6">
-                Welcome, adventurer. You've discovered a realm built not with modern frameworks, but with the raw power of <span class="text-white font-bold">C</span>. Every line of code, from the event loop to http parser, was written from scratch.
-            </p>
-            <p class="text-gray-400">
-                This is a testament to classic programming. No libraries, no shortcuts—just pure, compiled performance.
-            </p>
-        </section>
+        <div class="pixel-border bg-[#1f4068]/80 p-6 md:p-8 max-w-4xl mx-auto">
+            <h2 class="font-pixel text-xl md:text-2xl text-center text-[#f0a500] mb-6">// About PixelVerse //</h2>
+            
+            <div class="space-y-6 text-lg">
+                <section>
+                    <h3 class="font-pixel text-lg text-white mb-2">> The Philosophy</h3>
+                    <p>PixelVerse was born from a challenge: can a modern, interactive website be built from the ground up using only C? In an age of complex frameworks and libraries, this project is an exploration of minimalism, performance, and a return to first principles. It's a statement that with a solid understanding of the fundamentals, powerful applications can be forged from scratch.</p>
+                </section>
+
+                <section>
+                    <h3 class="font-pixel text-lg text-white mb-2">> The Technology</h3>
+                    <p>This entire website, from the HTTP server that delivers this page to the logic that handles forum posts, is a single, custom-written C program. We are not using Apache, Nginx, Node.js, or any other off-the-shelf server software. The front-end is intentionally simple, using vanilla HTML, Tailwind CSS for layout, and minimal JavaScript for interactivity, ensuring the backend does all the heavy lifting.</p>
+                </section>
+
+                <section>
+                    <h3 class="font-pixel text-lg text-white mb-2">> The Creator</h3>
+                    <p>This project was undertaken by a developer passionate about systems programming and retro gaming. The goal was to merge the aesthetics of the 8-bit era with the raw, compiled efficiency of C, creating something both nostalgic and technically unique.</p>
+                </section>
+            </div>
+        </div>
 
     </main>
 
@@ -133,12 +115,6 @@
         <p class="font-pixel text-sm text-gray-400">PIXELVERSE FORUMS &copy; 2024</p>
         <p class="text-xs text-gray-500 mt-2">Powered by caffeine, nostalgia, and pointers.</p>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Welcome to the C-powered PixelVerse! The DOM is ready.");
-        });
-    </script>
 
 </body>
 </html>
