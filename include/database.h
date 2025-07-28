@@ -3,5 +3,5 @@
 #include "parser.h"
 
 int add_message(body_t *body);
-
+char* get_messages();
 #endif 
